@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: synthetic-api
+  namespace: scaleops-lab
+  labels:
+    app.kubernetes.io/name: synthetic-api
+    app.kubernetes.io/part-of: scaleops-k8s-failure-lab
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    app.kubernetes.io/name: synthetic-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+

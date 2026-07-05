@@ -1,0 +1,27 @@
+datadog:
+  clusterName: scaleops-lab
+  logs:
+    enabled: true
+    containerCollectAll: true
+  apm:
+    portEnabled: true
+  processAgent:
+    enabled: true
+    processCollection: true
+  kubeStateMetricsCore:
+    enabled: true
+  kubelet:
+    tlsVerify: false
+  orchestratorExplorer:
+    enabled: true
+
+agents:
+  containers:
+    agent:
+      env:
+        - name: DD_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: DD_CONTAINER_EXCLUDE_LOGS
+          value: "name:datadog-agent"

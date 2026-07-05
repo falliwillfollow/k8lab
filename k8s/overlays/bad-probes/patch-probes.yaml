@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synthetic-api
+  namespace: scaleops-lab
+spec:
+  template:
+    spec:
+      containers:
+        - name: synthetic-api
+          env:
+            - name: READY_FAIL_RATE
+              value: "0.35"
+          livenessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 3
+            timeoutSeconds: 1
+            failureThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 1
+            periodSeconds: 3
+            timeoutSeconds: 1
+            failureThreshold: 1
+

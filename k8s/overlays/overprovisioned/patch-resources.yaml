@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synthetic-api
+  namespace: scaleops-lab
+spec:
+  replicas: 4
+  template:
+    spec:
+      containers:
+        - name: synthetic-api
+          resources:
+            requests:
+              cpu: "10000m"
+              memory: "768Mi"
+            limits:
+              cpu: "11000m"
+              memory: "1Gi"

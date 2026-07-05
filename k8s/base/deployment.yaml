@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synthetic-api
+  namespace: scaleops-lab
+  labels:
+    app.kubernetes.io/name: synthetic-api
+    app.kubernetes.io/part-of: scaleops-k8s-failure-lab
+    app.kubernetes.io/component: api
+    tags.datadoghq.com/env: lab
+    tags.datadoghq.com/service: synthetic-api
+    tags.datadoghq.com/version: local
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: synthetic-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: synthetic-api
+        app.kubernetes.io/part-of: scaleops-k8s-failure-lab
+        app.kubernetes.io/component: api
+        tags.datadoghq.com/env: lab
+        tags.datadoghq.com/service: synthetic-api
+        tags.datadoghq.com/version: local
+      annotations:
+        ad.datadoghq.com/synthetic-api.logs: '[{"source":"python","service":"synthetic-api"}]'
+    spec:
+      containers:
+        - name: synthetic-api
+          image: synthetic-api:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - configMapRef:
+                name: synthetic-api-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+

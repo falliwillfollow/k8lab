@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: synthetic-api-config
+  namespace: scaleops-lab
+data:
+  READY_FAIL_RATE: "0.0"
+  READY_STARTUP_DELAY_SECONDS: "0"
+  MAX_MEMORY_ALLOCATION_MB: "512"
+  MAX_LEAK_MEMORY_MB: "1024"
+  MAX_CPU_BURN_SECONDS: "30"
+
