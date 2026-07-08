@@ -6,5 +6,20 @@ For overprovisioning, compare requested CPU and memory against actual usage. For
 
 Logs from `synthetic-api` include path, status, latency, and pod name. Use them to connect a slow endpoint to the pod and the Kubernetes event timeline.
 
-APM is enabled in the Datadog values, but local kind networking can vary. Treat traces as useful optional polish, not a blocker for the core lab.
+## APM
 
+The lab enables Datadog APM on the Agent and runs the FastAPI app with `ddtrace-run`.
+
+The workload sets:
+
+```text
+DD_AGENT_HOST: node IP from status.hostIP
+DD_TRACE_AGENT_PORT: 8126
+DD_ENV: lab
+DD_SERVICE: synthetic-api
+DD_VERSION: local
+```
+
+Use APM service `synthetic-api` to inspect request latency for scenarios where Kubernetes resource metrics do not show the user-facing symptom directly, such as `bad-hpa-signal`.
+
+APM is enabled in the Datadog values, but local kind networking can vary. Treat traces as useful optional polish, not a blocker for the core lab.

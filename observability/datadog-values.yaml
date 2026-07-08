@@ -4,7 +4,9 @@ datadog:
     enabled: true
     containerCollectAll: true
   apm:
+    socketEnabled: true
     portEnabled: true
+    port: 8126
   processAgent:
     enabled: true
     processCollection: true
